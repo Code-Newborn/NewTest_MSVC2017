@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/combox">
+        <file>images/arrow-down-bold.png</file>
+        <file>images/del.png</file>
+    </qresource>
+</RCC>
