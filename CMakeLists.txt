@@ -24,17 +24,17 @@ FIND_PACKAGE(Qt5PrintSupport REQUIRED)
 # FIND_PACKAGE(Qt5Network REQUIRED)
 # FIND_PACKAGE(Qt5Concurrent REQUIRED)
 
-# #引入Opencv库
-# find_package(OpenCV
-#         PATHS D:\\OpenCV-4.5.0-withContribNonfree-MinGW730-Qt # 指定第三方Opencv库的OpenCVConfig.cmake所在路径
-#         NO_DEFAULT_PATH
-#         REQUIRED)
-# if (OpenCV_FOUND)
-#     include_directories(${OpenCV_INCLUDE_DIRS}) # 包含Opencv路径
-#     message( ${OpenCV_LIBS})    # 打印Opencv库Lib模块内容
-# else()
-#     message("OpenCV not found, so we won't build the project.")
-# endif()
+#引入Opencv库
+find_package(OpenCV
+        PATHS D:\\OpenCV-4.5.0-withContribNonfree-VS2022-VScode # 指定第三方Opencv库的OpenCVConfig.cmake所在路径
+        NO_DEFAULT_PATH
+        REQUIRED)
+if (OpenCV_FOUND)
+    include_directories(${OpenCV_INCLUDE_DIRS}) # 包含Opencv路径
+    message( ${OpenCV_LIBS})    # 打印Opencv库Lib模块内容
+else()
+     message("OpenCV not found, so we won't build the project.")
+endif()
 
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}) # 指定.exe文件输出路径为CmakeList.txt所在目录，是其他文件相对路径的参考，不可删除
 
@@ -42,7 +42,7 @@ SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}) # 指定.exe文件输出
 INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_SOURCE_DIR} # 包含当前处理的 CMakeLists.txt 文件所在的路径
   ./include
-#  ./external/MultiSelectCombox
+  ./include./pylon_include
   )
 
 #启用qrc资源文件
@@ -51,14 +51,10 @@ INCLUDE_DIRECTORIES(
 file(GLOB SRC_FILES
   *.cpp
   ./source/*.cpp
-#  ./external/MultiSelectCombox/*.cpp
-#  ./external/XCombox/*.cpp
   )
 file(GLOB HEADER_FILES
   ./*.h
   ./include/*.h
-#  ./external/MultiSelectCombox/*.h
-#  ./external/XCombox/*.h
 )
 file(GLOB FORMS
   ./*.ui
@@ -66,9 +62,9 @@ file(GLOB FORMS
 file(GLOB RESOURCE_FILES
   ./resource/*.qrc
 )
-#file(GLOB HIKVISION_LIBS
-#  ./HIKVISION/Libraries/win64/*.lib
-#)
+file(GLOB PYLON_LIBS
+  ./lib/pylon_libs/x64/*.lib
+)
 
 
 add_executable(${PROJECT_NAME}
@@ -80,4 +76,5 @@ add_executable(${PROJECT_NAME}
 
 # 链接 目标和其依赖项所要使用的库。
 target_link_libraries( ${PROJECT_NAME} ${OpenCV_LIBS} ) # 需要将D:\OpenCV-4.5.0-withContribNonfree-MinGW730-Qt\x64\mingw\bin加入环境变量path
+target_link_libraries( ${PROJECT_NAME} ${PYLON_LIBS} )
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets Qt5::SerialPort Qt5::Gui Qt5::PrintSupport) # 链接Qt库

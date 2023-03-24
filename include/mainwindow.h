@@ -11,6 +11,8 @@
 #include <QtDebug>
 #include <QDoubleValidator>
 
+#include "guicamera.h"
+
 #define dataRecvFreq 200 // NOTE 数据接收频率
 #define dataSendFreq 200 // NOTE 数据发送频率
 
@@ -35,6 +37,10 @@ public:
     void curveLegendSet(QLabel *curvelegend, int curveIndex);
 
     void initialValidator();
+
+    int EnumerateDevices();                            // 枚举相机
+    void MainWindow::ShowWarning(QString warningText); // 显示警告
+    void UpdateCameraDialog(int cameraId);             // 更新和相机有关的控件
 
 public:
     QList<FloatDatas> datalist; // 全部数据帧存储
@@ -64,10 +70,10 @@ private:
     FrameToSendFormat frameToSendFormat; // 发送数据帧
 
     char controlMode_toSend; // 待发送的控制模式指令
-    float data1_toSend;   // 待发送的数据指令1
-    float data2_toSend;   // 待发送的数据指令2
-    float data3_toSend;   // 待发送的数据指令3
-    float data4_toSend;   // 待发送的数据指令4
+    float data1_toSend;      // 待发送的数据指令1
+    float data2_toSend;      // 待发送的数据指令2
+    float data3_toSend;      // 待发送的数据指令3
+    float data4_toSend;      // 待发送的数据指令4
 
 signals:
     void openSerial(QString portname);          // 打开串口 信号
@@ -95,9 +101,15 @@ private slots:
 
     void on_pushButton_stopSend_clicked();
 
+    void on_scanButton_clicked();
+
+    void on_cameraList_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
     QThread *subThread;
     Com *readwriteCom;
+
+    Pylon::DeviceInfoList_t m_devices; // Pylon相机列表
 };
 #endif // MAINWINDOW_H

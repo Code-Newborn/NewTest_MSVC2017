@@ -65,7 +65,7 @@ margin-top: 5px;
 }</string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab_1">
          <attribute name="title">
@@ -1798,8 +1798,83 @@ QComboBox::down-arrow {
         </widget>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
-          <string>基本环路控制</string>
+          <string>相机</string>
          </attribute>
+         <widget class="QWidget" name="image_1" native="true">
+          <property name="geometry">
+           <rect>
+            <x>130</x>
+            <y>110</y>
+            <width>351</width>
+            <height>221</height>
+           </rect>
+          </property>
+          <property name="autoFillBackground">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QWidget" name="image_2" native="true">
+          <property name="geometry">
+           <rect>
+            <x>570</x>
+            <y>100</y>
+            <width>351</width>
+            <height>221</height>
+           </rect>
+          </property>
+          <property name="autoFillBackground">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="scanButton">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>30</y>
+            <width>119</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Discover Cameras</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="cameraList">
+          <property name="geometry">
+           <rect>
+            <x>270</x>
+            <y>30</y>
+            <width>626</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="singleShot">
+          <property name="geometry">
+           <rect>
+            <x>130</x>
+            <y>380</y>
+            <width>119</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Single Shot</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="openSelected">
+          <property name="geometry">
+           <rect>
+            <x>900</x>
+            <y>30</y>
+            <width>119</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Open Selected</string>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab_3">
          <property name="font">
@@ -1824,7 +1899,7 @@ QComboBox::down-arrow {
      <x>0</x>
      <y>0</y>
      <width>1290</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>

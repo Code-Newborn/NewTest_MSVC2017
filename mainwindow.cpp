@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "com.h"
+#include "guicamera.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -551,4 +552,84 @@ void MainWindow::on_pushButton_send_clicked()
 void MainWindow::on_pushButton_stopSend_clicked()
 {
     sendTimer->stop();
+}
+
+// Show a warning dialog.
+void MainWindow::ShowWarning(QString warningText)
+{
+    QMessageBox::warning(this, "GUI Sample", warningText, QMessageBox::Ok);
+}
+
+int MainWindow::EnumerateDevices()
+{
+    Pylon::DeviceInfoList_t devices;
+    try
+    {
+        // Get the transport layer factory.
+        Pylon::CTlFactory &TlFactory = Pylon::CTlFactory::GetInstance();
+
+        // Get all attached cameras.
+        TlFactory.EnumerateDevices(devices);
+    }
+    catch (const Pylon::GenericException &e)
+    {
+        PYLON_UNUSED(e);
+        devices.clear();
+
+        qDebug() << e.GetDescription();
+    }
+
+    m_devices = devices;
+
+    // When calling this function, make sure to update the device list control
+    // because its items store pointers to elements in the m_devices list.
+    return (int)m_devices.size();
+}
+
+void MainWindow::on_scanButton_clicked()
+{
+    // Remove all items from the combo box.
+    ui->cameraList->clear();
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    // Enumerate devices.
+    int deviceCount = EnumerateDevices();
+    QApplication::restoreOverrideCursor(); // 重置光标
+
+    if (deviceCount == 0)
+    {
+        ShowWarning("No camera found.");
+        return;
+    }
+
+    // Fill the combo box.
+    for (Pylon::DeviceInfoList_t::const_iterator it = m_devices.begin(); it != m_devices.end(); ++it)
+    {
+        // Get the pointer to the current device info.
+        const Pylon::CDeviceInfo *const pDeviceInfo = &(*it);
+
+        // Add the friendly name to the list.
+        Pylon::String_t friendlyName = pDeviceInfo->GetFriendlyName();
+        // Add a pointer to CDeviceInfo as item data so we can use it later.
+        ui->cameraList->addItem(friendlyName.c_str(), QVariant::fromValue((void *)pDeviceInfo));
+    }
+
+    // Select first item.
+    ui->cameraList->setCurrentIndex(0);
+
+    // Enable/disable controls.
+    on_cameraList_currentIndexChanged(-1);
+}
+
+void MainWindow::on_cameraList_currentIndexChanged(int index)
+{
+    PYLON_UNUSED(index);
+
+    // The combo box affects both open buttons.
+    UpdateCameraDialog(0);
+    UpdateCameraDialog(1);
+}
+
+void MainWindow::UpdateCameraDialog(int cameraId) // 根据相机状态更新窗口控件的状态
+{
 }
