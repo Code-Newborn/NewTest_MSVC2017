@@ -1805,25 +1805,12 @@ QComboBox::down-arrow {
            <rect>
             <x>130</x>
             <y>110</y>
-            <width>351</width>
-            <height>221</height>
+            <width>431</width>
+            <height>291</height>
            </rect>
           </property>
           <property name="autoFillBackground">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QWidget" name="image_2" native="true">
-          <property name="geometry">
-           <rect>
-            <x>570</x>
-            <y>100</y>
-            <width>351</width>
-            <height>221</height>
-           </rect>
-          </property>
-          <property name="autoFillBackground">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
          <widget class="QPushButton" name="scanButton">
@@ -1849,11 +1836,11 @@ QComboBox::down-arrow {
            </rect>
           </property>
          </widget>
-         <widget class="QPushButton" name="singleShot">
+         <widget class="QPushButton" name="singleShot_1">
           <property name="geometry">
            <rect>
             <x>130</x>
-            <y>380</y>
+            <y>410</y>
             <width>119</width>
             <height>23</height>
            </rect>
@@ -1873,6 +1860,218 @@ QComboBox::down-arrow {
           </property>
           <property name="text">
            <string>Open Selected</string>
+          </property>
+         </widget>
+         <widget class="QSlider" name="exposure_1">
+          <property name="geometry">
+           <rect>
+            <x>495</x>
+            <y>419</y>
+            <width>217</width>
+            <height>22</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+         <widget class="QLabel" name="exposuretimeLabel_1">
+          <property name="geometry">
+           <rect>
+            <x>395</x>
+            <y>419</y>
+            <width>119</width>
+            <height>24</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Exposure Time</string>
+          </property>
+         </widget>
+         <widget class="QSlider" name="gain_1">
+          <property name="geometry">
+           <rect>
+            <x>495</x>
+            <y>449</y>
+            <width>217</width>
+            <height>22</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+         <widget class="QLabel" name="gainLabel_1">
+          <property name="geometry">
+           <rect>
+            <x>395</x>
+            <y>449</y>
+            <width>119</width>
+            <height>24</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Gain</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="pixelFormat_1">
+          <property name="geometry">
+           <rect>
+            <x>520</x>
+            <y>473</y>
+            <width>243</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="triggerMode_1">
+          <property name="geometry">
+           <rect>
+            <x>520</x>
+            <y>499</y>
+            <width>243</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="triggerSource_1">
+          <property name="geometry">
+           <rect>
+            <x>520</x>
+            <y>525</y>
+            <width>243</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="invertPixelLabel_1">
+          <property name="geometry">
+           <rect>
+            <x>395</x>
+            <y>580</y>
+            <width>119</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Invert Pixels</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="invertPixel_1">
+          <property name="geometry">
+           <rect>
+            <x>520</x>
+            <y>580</y>
+            <width>243</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Enable</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="softwareTriggerLabel_1">
+          <property name="geometry">
+           <rect>
+            <x>395</x>
+            <y>551</y>
+            <width>119</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Software Trigger</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="softwareTrigger_1">
+          <property name="geometry">
+           <rect>
+            <x>520</x>
+            <y>551</y>
+            <width>243</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Execute</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="triggerSourceLabel_1">
+          <property name="geometry">
+           <rect>
+            <x>395</x>
+            <y>525</y>
+            <width>119</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Trigger Source</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="pixelFormatLabel_1">
+          <property name="geometry">
+           <rect>
+            <x>395</x>
+            <y>473</y>
+            <width>119</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Pixel Format</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="triggerModeLabel_1">
+          <property name="geometry">
+           <rect>
+            <x>395</x>
+            <y>499</y>
+            <width>119</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Frame Start Trigger</string>
+          </property>
+         </widget>
+         <widget class="QWidget" name="image_2" native="true">
+          <property name="geometry">
+           <rect>
+            <x>610</x>
+            <y>110</y>
+            <width>401</width>
+            <height>291</height>
+           </rect>
+          </property>
+          <property name="autoFillBackground">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="continuous_1">
+          <property name="geometry">
+           <rect>
+            <x>130</x>
+            <y>440</y>
+            <width>118</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Continuous Shot</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="stop_1">
+          <property name="geometry">
+           <rect>
+            <x>130</x>
+            <y>470</y>
+            <width>119</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Stop</string>
           </property>
          </widget>
         </widget>

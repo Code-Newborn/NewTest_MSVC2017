@@ -42,6 +42,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(plotUpdate())); // 定时刷新数据显示
     connect(sendTimer, SIGNAL(timeout()), this, SLOT(sendFrame()));     // 定时发送帧数据
+
+
+    for (int i = 0; i < MaxCamera; i++)
+    {
+        m_camera[i].SetUserHint(i);
+
+        // Connect signals from CGuiCamera class to this dialog.
+        QObject::connect(&(m_camera[i]), &CGuiCamera::NewGrabResult, this, &MainWindow::OnNewGrabResult); // 抓图
+        // QObject::connect(&(m_camera[i]), &CGuiCamera::StateChanged, this, &MainWindow::OnStateChanged);   // 状态更新
+        // QObject::connect(&(m_camera[i]), &CGuiCamera::DeviceRemoved, this, &MainWindow::OnDeviceRemoved); // 设备移除
+        // QObject::connect(&(m_camera[i]), &CGuiCamera::NodeUpdated, this, &MainWindow::OnNodeUpdated);     // 节点更新
+    }
 }
 
 MainWindow::~MainWindow()
@@ -632,4 +644,123 @@ void MainWindow::on_cameraList_currentIndexChanged(int index)
 
 void MainWindow::UpdateCameraDialog(int cameraId) // 根据相机状态更新窗口控件的状态
 {
+}
+
+bool MainWindow::InternalOpenCamera(const Pylon::CDeviceInfo &devInfo, int cameraId)
+{
+    try
+    {
+        // Open() may throw exceptions.
+        m_camera[cameraId].Open(devInfo);
+    }
+    catch (const Pylon::GenericException &e)
+    {
+        ShowWarning(QString("Could not open camera!\n") + QString(e.GetDescription()));
+
+        return false;
+    }
+
+    try
+    {
+        // Update controls.
+        UpdateCameraDialog(cameraId);
+        if (cameraId == 0)
+        {
+            /*
+            UpdateSlider(ui->exposure_1, m_camera[cameraId].GetExposureTime());
+            UpdateSliderText(ui->exposureLabel_1, m_camera[cameraId].GetExposureTime());
+            UpdateSlider(ui->gain_1, m_camera[cameraId].GetGain());
+            UpdateSliderText(ui->gainLabel_1, m_camera[cameraId].GetGain());
+            UpdateEnumeration(ui->pixelFormat_1, m_camera[cameraId].GetPixelFormat());
+            UpdateEnumeration(ui->triggerMode_1, m_camera[cameraId].GetTriggerMode());
+            UpdateEnumeration(ui->triggerSource_1, m_camera[cameraId].GetTriggerSource());
+            */
+        }
+        else if (cameraId == 1)
+        {
+            /*
+            UpdateSlider(ui->exposure_2, m_camera[cameraId].GetExposureTime());
+            UpdateSliderText(ui->exposureLabel_2, m_camera[cameraId].GetExposureTime());
+            UpdateSlider(ui->gain_2, m_camera[cameraId].GetGain());
+            UpdateSliderText(ui->gainLabel_2, m_camera[cameraId].GetGain());
+            UpdateEnumeration(ui->pixelFormat_2, m_camera[cameraId].GetPixelFormat());
+            UpdateEnumeration(ui->triggerMode_2, m_camera[cameraId].GetTriggerMode());
+            UpdateEnumeration(ui->triggerSource_2, m_camera[cameraId].GetTriggerSource());
+            */
+        }
+        else
+        {
+            assert(false);
+        }
+
+        return true;
+    }
+    catch (const Pylon::GenericException &e)
+    {
+        PYLON_UNUSED(e);
+        return false;
+    }
+}
+
+void MainWindow::on_openSelected_clicked()
+{
+    int index = ui->cameraList->currentIndex();
+    if (index < 0)
+    {
+        return;
+    }
+
+    // Get the pointer to Pylon::CDeviceInfo selected.
+    const Pylon::CDeviceInfo *pDeviceInfo = (const Pylon::CDeviceInfo *)ui->cameraList->itemData(index).value<void *>();
+
+    // Open the camera.
+    InternalOpenCamera(*pDeviceInfo, 0);
+}
+
+void MainWindow::on_continuous_1_clicked()
+{
+    try
+    {
+        m_camera[0].ContinuousGrab();
+    }
+    catch (const Pylon::GenericException &e)
+    {
+        ShowWarning(QString("Could not start grab!\n") + QString(e.GetDescription()));
+    }
+}
+
+void MainWindow::OnNewGrabResult(int userHint)
+{
+    if ((userHint == 0) && m_camera[0].IsOpen())
+    {
+        // Make sure to repaint the image control.
+        // The actual drawing is done in paintEvent.
+        ui->image_1->repaint();
+    }
+
+    if ((userHint == 1) && m_camera[1].IsOpen())
+    {
+        // Make sure to repaint the image control.
+        // The actual drawing is done in paintEvent.
+        ui->image_2->repaint();
+    }
+}
+
+// This overrides the paintEvent of the dialog to paint the images.
+// For better performance and easy maintenance a custom control should be used.
+void MainWindow::paintEvent(QPaintEvent *ev)
+{
+    QMainWindow::paintEvent(ev);
+
+    // Repaint image of camera 1.
+    if (m_camera[0].IsOpen())
+    {
+        QPainter painter(this);
+        QRect target = ui->image_1->geometry();
+
+        QMutexLocker locker(m_camera[0].GetBmpLock());
+        QImage image = m_camera[0].GetImage();
+        QRect source = QRect(0, 0, image.width(), image.height());
+        painter.drawImage(target, image, source);
+    }
 }

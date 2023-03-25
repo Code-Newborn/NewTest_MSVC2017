@@ -41,6 +41,7 @@ public:
     int EnumerateDevices();                            // 枚举相机
     void MainWindow::ShowWarning(QString warningText); // 显示警告
     void UpdateCameraDialog(int cameraId);             // 更新和相机有关的控件
+    bool InternalOpenCamera(const Pylon::CDeviceInfo &devInfo, int cameraId);
 
 public:
     QList<FloatDatas> datalist; // 全部数据帧存储
@@ -105,11 +106,24 @@ private slots:
 
     void on_cameraList_currentIndexChanged(int index);
 
+    void on_openSelected_clicked();
+
+    void on_continuous_1_clicked();
+
+    // Slots for GuiCamera signals
+    void OnNewGrabResult(int userHint);
+
+protected:
+    //    virtual void showEvent(QShowEvent *event) override;
+    virtual void paintEvent(QPaintEvent *) override;
+
 private:
     Ui::MainWindow *ui;
     QThread *subThread;
     Com *readwriteCom;
 
     Pylon::DeviceInfoList_t m_devices; // Pylon相机列表
+    static const int MaxCamera = 1;    // 最大相机数
+    CGuiCamera m_camera[MaxCamera];    // 相机操作类列表
 };
 #endif // MAINWINDOW_H
