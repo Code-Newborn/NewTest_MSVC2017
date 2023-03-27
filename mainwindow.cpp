@@ -54,6 +54,8 @@ MainWindow::MainWindow(QWidget *parent)
         // QObject::connect(&(m_camera[i]), &CGuiCamera::DeviceRemoved, this, &MainWindow::OnDeviceRemoved); // 设备移除
         // QObject::connect(&(m_camera[i]), &CGuiCamera::NodeUpdated, this, &MainWindow::OnNodeUpdated);     // 节点更新
     }
+
+    ui->image_1->installEventFilter(this);//在label_2上安装事件过滤器
 }
 
 MainWindow::~MainWindow()
@@ -735,24 +737,24 @@ void MainWindow::OnNewGrabResult(int userHint)
     {
         // Make sure to repaint the image control.
         // The actual drawing is done in paintEvent.
-        ui->image_1->repaint();
+        ui->image_1->update();
     }
 
     if ((userHint == 1) && m_camera[1].IsOpen())
     {
         // Make sure to repaint the image control.
         // The actual drawing is done in paintEvent.
-        ui->image_2->repaint();
+        ui->image_2->update();
     }
 }
+
+
 
 // This overrides the paintEvent of the dialog to paint the images.
 // For better performance and easy maintenance a custom control should be used.
 void MainWindow::paintEvent(QPaintEvent *ev)
 {
-    QMainWindow::paintEvent(ev);
-
-    // Repaint image of camera 1.
+//    QWidget::paintEvent(ev);
     if (m_camera[0].IsOpen())
     {
         QPainter painter(this);
@@ -763,4 +765,29 @@ void MainWindow::paintEvent(QPaintEvent *ev)
         QRect source = QRect(0, 0, image.width(), image.height());
         painter.drawImage(target, image, source);
     }
+
+    // Repaint image of camera 1.
+
+}
+
+void MainWindow::on_stop_1_clicked()
+{
+    try
+    {
+        m_camera[0].StopGrab();
+    }
+    catch (const Pylon::GenericException &e)
+    {
+        ShowWarning(QString("Could not stop grab!\n") + QString(e.GetDescription()));
+    }
+}
+
+bool MainWindow::eventFilter(QObject *obj,QEvent *e)
+{
+    QWidget*wid = qobject_cast<QWidget*>(obj);
+        if(wid==ui->image_1&&e->type() == QEvent::Paint)
+        {
+
+        }
+        return  false;
 }

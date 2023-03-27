@@ -1805,7 +1805,7 @@ QComboBox::down-arrow {
            <rect>
             <x>130</x>
             <y>110</y>
-            <width>431</width>
+            <width>161</width>
             <height>291</height>
            </rect>
           </property>
@@ -1840,7 +1840,7 @@ QComboBox::down-arrow {
           <property name="geometry">
            <rect>
             <x>130</x>
-            <y>410</y>
+            <y>500</y>
             <width>119</width>
             <height>23</height>
            </rect>
@@ -2052,7 +2052,7 @@ QComboBox::down-arrow {
           <property name="geometry">
            <rect>
             <x>130</x>
-            <y>440</y>
+            <y>530</y>
             <width>118</width>
             <height>23</height>
            </rect>
@@ -2065,13 +2065,29 @@ QComboBox::down-arrow {
           <property name="geometry">
            <rect>
             <x>130</x>
-            <y>470</y>
+            <y>560</y>
             <width>119</width>
             <height>23</height>
            </rect>
           </property>
           <property name="text">
            <string>Stop</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="statusbar_1">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>410</y>
+            <width>368</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </widget>

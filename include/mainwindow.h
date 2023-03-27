@@ -113,9 +113,15 @@ private slots:
     // Slots for GuiCamera signals
     void OnNewGrabResult(int userHint);
 
+    void on_stop_1_clicked();
+
+
+
 protected:
     //    virtual void showEvent(QShowEvent *event) override;
     virtual void paintEvent(QPaintEvent *) override;
+
+    virtual bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::MainWindow *ui;
