@@ -43,7 +43,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(plotUpdate())); // 定时刷新数据显示
     connect(sendTimer, SIGNAL(timeout()), this, SLOT(sendFrame()));     // 定时发送帧数据
 
-
     for (int i = 0; i < MaxCamera; i++)
     {
         m_camera[i].SetUserHint(i);
@@ -54,8 +53,6 @@ MainWindow::MainWindow(QWidget *parent)
         // QObject::connect(&(m_camera[i]), &CGuiCamera::DeviceRemoved, this, &MainWindow::OnDeviceRemoved); // 设备移除
         // QObject::connect(&(m_camera[i]), &CGuiCamera::NodeUpdated, this, &MainWindow::OnNodeUpdated);     // 节点更新
     }
-
-    ui->image_1->installEventFilter(this);//在label_2上安装事件过滤器
 }
 
 MainWindow::~MainWindow()
@@ -644,6 +641,128 @@ void MainWindow::on_cameraList_currentIndexChanged(int index)
     UpdateCameraDialog(1);
 }
 
+// Called to update value of slider.
+void MainWindow::UpdateSlider(QSlider *pCtrl, Pylon::IIntegerEx &integerParameter)
+{
+    if (pCtrl == nullptr)
+    {
+        qDebug() << "Invalid control ID";
+        return;
+    }
+
+    if (!integerParameter.IsValid())
+    {
+        pCtrl->setEnabled(false);
+        return;
+    }
+
+    if (integerParameter.IsReadable())
+    {
+        int64_t minimum = integerParameter.GetMin();
+        int64_t maximum = integerParameter.GetMax();
+        int64_t value = integerParameter.GetValue();
+
+        // NOTE:
+        // Possible loss of data because controls only support
+        // 32-bit values while GenApi supports 64-bit values.
+        pCtrl->setRange(static_cast<int>(minimum), static_cast<int>(maximum));
+        pCtrl->setValue(static_cast<int>(value));
+    }
+
+    pCtrl->setEnabled(integerParameter.IsWritable());
+}
+
+// Stores GenApi enumeration items into CComboBox.
+void MainWindow::UpdateEnumeration(QComboBox *pCtrl, Pylon::IEnumerationEx &enumParameter)
+{
+    if (pCtrl == NULL)
+    {
+        qDebug() << "Invalid control ID";
+        return;
+    }
+
+    if (enumParameter.IsReadable())
+    {
+        // Enum entries can become invalid if the camera is reconfigured
+        // so we may have to remove existing entries.
+        // By iterating from the end to the beginning we don't have to adjust the
+        // index when removing an entry.
+        for (int index = pCtrl->count(); --index >= 0; /* empty intentionally */)
+        {
+            GenApi::IEnumEntry *pEntry = reinterpret_cast<GenApi::IEnumEntry *>(pCtrl->itemData(index).value<void *>());
+            if (!Pylon::CParameter(pEntry).IsReadable())
+            {
+                // Entry in control is not valid enum entry anymore, so we remove it.
+                pCtrl->removeItem(index);
+            }
+        }
+
+        // Remember the current entry so we can select it later.
+        GenApi::IEnumEntry *pCurrentEntry = enumParameter.GetCurrentEntry();
+
+        // Retrieve the list of entries.
+        Pylon::StringList_t symbolics;
+        enumParameter.GetSettableValues(symbolics);
+
+        // Specify the index you want to select.
+        int selectedIndex = -1;
+
+        // Add items if not already present.
+        for (GenApi::StringList_t::iterator it = symbolics.begin(), end = symbolics.end(); it != end; ++it)
+        {
+            const Pylon::String_t symbolic = *it;
+            GenApi::IEnumEntry *pEntry = enumParameter.GetEntryByName(symbolic);
+            if (pEntry != NULL && Pylon::CParameter(pEntry).IsReadable())
+            {
+                // Show the display name / friendly name in the GUI.
+                const QString displayName = pEntry->GetNode()->GetDisplayName().c_str();
+
+                int index = pCtrl->findText(displayName);
+                if (index == -1)
+                {
+                    // The entry doesn't exist. Add it to the list.
+                    // Set the name in wide character format.
+                    // Store the pointer for easy node access.
+                    pCtrl->addItem(displayName, QVariant::fromValue((void *)pEntry));
+                }
+
+                // If it is the current entry, we will select it after adding all entries.
+                if (pEntry == pCurrentEntry)
+                {
+                    selectedIndex = index;
+                }
+            }
+        }
+
+        // If one index should be selected, select it in the list.
+        if (selectedIndex > 0)
+        {
+            pCtrl->setCurrentIndex(selectedIndex);
+        }
+    }
+
+    // Enable/disable control depending on the state of the enum parameter.
+    // Also disable if there are no valid entries.
+    pCtrl->setEnabled(enumParameter.IsWritable() && pCtrl->count() > 0);
+}
+
+// Reset a slider control to default values.
+void MainWindow::ClearSlider(QSlider *pCtrl, QLabel *pString)
+{
+    pCtrl->setValue(0);
+    pCtrl->setRange(0, 0);
+    pCtrl->setEnabled(false);
+
+    pString->setText("");
+}
+
+// Called to update the enumeration in a combo box.
+void MainWindow::ClearEnumeration(QComboBox *pCtrl)
+{
+    pCtrl->clear();
+    pCtrl->setEnabled(false);
+}
+
 void MainWindow::UpdateCameraDialog(int cameraId) // 根据相机状态更新窗口控件的状态
 {
 }
@@ -676,18 +795,6 @@ bool MainWindow::InternalOpenCamera(const Pylon::CDeviceInfo &devInfo, int camer
             UpdateEnumeration(ui->pixelFormat_1, m_camera[cameraId].GetPixelFormat());
             UpdateEnumeration(ui->triggerMode_1, m_camera[cameraId].GetTriggerMode());
             UpdateEnumeration(ui->triggerSource_1, m_camera[cameraId].GetTriggerSource());
-            */
-        }
-        else if (cameraId == 1)
-        {
-            /*
-            UpdateSlider(ui->exposure_2, m_camera[cameraId].GetExposureTime());
-            UpdateSliderText(ui->exposureLabel_2, m_camera[cameraId].GetExposureTime());
-            UpdateSlider(ui->gain_2, m_camera[cameraId].GetGain());
-            UpdateSliderText(ui->gainLabel_2, m_camera[cameraId].GetGain());
-            UpdateEnumeration(ui->pixelFormat_2, m_camera[cameraId].GetPixelFormat());
-            UpdateEnumeration(ui->triggerMode_2, m_camera[cameraId].GetTriggerMode());
-            UpdateEnumeration(ui->triggerSource_2, m_camera[cameraId].GetTriggerSource());
             */
         }
         else
@@ -737,37 +844,37 @@ void MainWindow::OnNewGrabResult(int userHint)
     {
         // Make sure to repaint the image control.
         // The actual drawing is done in paintEvent.
-        ui->image_1->update();
+        ui->image_1->repaint();
+        ui->image_2->repaint();
     }
 
     if ((userHint == 1) && m_camera[1].IsOpen())
     {
         // Make sure to repaint the image control.
         // The actual drawing is done in paintEvent.
-        ui->image_2->update();
+        ui->image_2->repaint();
     }
 }
-
-
 
 // This overrides the paintEvent of the dialog to paint the images.
 // For better performance and easy maintenance a custom control should be used.
 void MainWindow::paintEvent(QPaintEvent *ev)
 {
-//    QWidget::paintEvent(ev);
+    QMainWindow::paintEvent(ev);
     if (m_camera[0].IsOpen())
     {
         QPainter painter(this);
-        QRect target = ui->image_1->geometry();
+        QRect target1 = ui->image_1->geometry();
+        QRect target2 = ui->image_2->geometry();
 
         QMutexLocker locker(m_camera[0].GetBmpLock());
         QImage image = m_camera[0].GetImage();
         QRect source = QRect(0, 0, image.width(), image.height());
-        painter.drawImage(target, image, source);
+        painter.drawImage(target1, image, source);
+        painter.drawImage(target2, image, source);
     }
 
     // Repaint image of camera 1.
-
 }
 
 void MainWindow::on_stop_1_clicked()
@@ -782,12 +889,27 @@ void MainWindow::on_stop_1_clicked()
     }
 }
 
-bool MainWindow::eventFilter(QObject *obj,QEvent *e)
+void MainWindow::InternalCloseCamera(int cameraId)
 {
-    QWidget*wid = qobject_cast<QWidget*>(obj);
-        if(wid==ui->image_1&&e->type() == QEvent::Paint)
-        {
+    try
+    {
+        m_camera[cameraId].Close();
 
-        }
-        return  false;
+        // Enable/disable controls.
+        UpdateCameraDialog(cameraId);
+    }
+    catch (const Pylon::GenericException &e)
+    {
+        PYLON_UNUSED(e);
+    }
+}
+
+void MainWindow::on_close_1_clicked()
+{
+    InternalCloseCamera(0);
+
+    // Make sure to repaint the image control.
+    // The actual drawing is done in paintEvent.
+    ui->image_1->repaint();
+    ui->image_2->repaint();
 }

@@ -42,6 +42,11 @@ public:
     void MainWindow::ShowWarning(QString warningText); // 显示警告
     void UpdateCameraDialog(int cameraId);             // 更新和相机有关的控件
     bool InternalOpenCamera(const Pylon::CDeviceInfo &devInfo, int cameraId);
+    void InternalCloseCamera(int cameraId);
+    void UpdateSlider(QSlider *pCtrl, Pylon::IIntegerEx &integerParameter);
+    void UpdateEnumeration(QComboBox *pCtrl, Pylon::IEnumerationEx &enumParameter);
+        void ClearSlider(QSlider *pCtrl, QLabel *pString);
+        void ClearEnumeration(QComboBox *pCtrl);
 
 public:
     QList<FloatDatas> datalist; // 全部数据帧存储
@@ -115,13 +120,11 @@ private slots:
 
     void on_stop_1_clicked();
 
-
+    void on_close_1_clicked();
 
 protected:
     //    virtual void showEvent(QShowEvent *event) override;
     virtual void paintEvent(QPaintEvent *) override;
-
-    virtual bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::MainWindow *ui;

@@ -22,8 +22,8 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_horizSplit" stretch="0">
-      <item>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0" colspan="2">
        <widget class="QTabWidget" name="m_tabWidget">
         <property name="font">
          <font>
@@ -1800,296 +1800,207 @@ QComboBox::down-arrow {
          <attribute name="title">
           <string>相机</string>
          </attribute>
-         <widget class="QWidget" name="image_1" native="true">
-          <property name="geometry">
-           <rect>
-            <x>130</x>
-            <y>110</y>
-            <width>161</width>
-            <height>291</height>
-           </rect>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="scanButton">
-          <property name="geometry">
-           <rect>
-            <x>140</x>
-            <y>30</y>
-            <width>119</width>
-            <height>23</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Discover Cameras</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="cameraList">
-          <property name="geometry">
-           <rect>
-            <x>270</x>
-            <y>30</y>
-            <width>626</width>
-            <height>20</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="singleShot_1">
-          <property name="geometry">
-           <rect>
-            <x>130</x>
-            <y>500</y>
-            <width>119</width>
-            <height>23</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Single Shot</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="openSelected">
-          <property name="geometry">
-           <rect>
-            <x>900</x>
-            <y>30</y>
-            <width>119</width>
-            <height>23</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Open Selected</string>
-          </property>
-         </widget>
-         <widget class="QSlider" name="exposure_1">
-          <property name="geometry">
-           <rect>
-            <x>495</x>
-            <y>419</y>
-            <width>217</width>
-            <height>22</height>
-           </rect>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-         <widget class="QLabel" name="exposuretimeLabel_1">
-          <property name="geometry">
-           <rect>
-            <x>395</x>
-            <y>419</y>
-            <width>119</width>
-            <height>24</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Exposure Time</string>
-          </property>
-         </widget>
-         <widget class="QSlider" name="gain_1">
-          <property name="geometry">
-           <rect>
-            <x>495</x>
-            <y>449</y>
-            <width>217</width>
-            <height>22</height>
-           </rect>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-         <widget class="QLabel" name="gainLabel_1">
-          <property name="geometry">
-           <rect>
-            <x>395</x>
-            <y>449</y>
-            <width>119</width>
-            <height>24</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Gain</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="pixelFormat_1">
-          <property name="geometry">
-           <rect>
-            <x>520</x>
-            <y>473</y>
-            <width>243</width>
-            <height>20</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="triggerMode_1">
-          <property name="geometry">
-           <rect>
-            <x>520</x>
-            <y>499</y>
-            <width>243</width>
-            <height>20</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="triggerSource_1">
-          <property name="geometry">
-           <rect>
-            <x>520</x>
-            <y>525</y>
-            <width>243</width>
-            <height>20</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="invertPixelLabel_1">
-          <property name="geometry">
-           <rect>
-            <x>395</x>
-            <y>580</y>
-            <width>119</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Invert Pixels</string>
-          </property>
-         </widget>
-         <widget class="QCheckBox" name="invertPixel_1">
-          <property name="geometry">
-           <rect>
-            <x>520</x>
-            <y>580</y>
-            <width>243</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Enable</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="softwareTriggerLabel_1">
-          <property name="geometry">
-           <rect>
-            <x>395</x>
-            <y>551</y>
-            <width>119</width>
-            <height>23</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Software Trigger</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="softwareTrigger_1">
-          <property name="geometry">
-           <rect>
-            <x>520</x>
-            <y>551</y>
-            <width>243</width>
-            <height>23</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Execute</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="triggerSourceLabel_1">
-          <property name="geometry">
-           <rect>
-            <x>395</x>
-            <y>525</y>
-            <width>119</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Trigger Source</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="pixelFormatLabel_1">
-          <property name="geometry">
-           <rect>
-            <x>395</x>
-            <y>473</y>
-            <width>119</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Pixel Format</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="triggerModeLabel_1">
-          <property name="geometry">
-           <rect>
-            <x>395</x>
-            <y>499</y>
-            <width>119</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Frame Start Trigger</string>
-          </property>
-         </widget>
-         <widget class="QWidget" name="image_2" native="true">
-          <property name="geometry">
-           <rect>
-            <x>610</x>
-            <y>110</y>
-            <width>401</width>
-            <height>291</height>
-           </rect>
-          </property>
-          <property name="autoFillBackground">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="continuous_1">
-          <property name="geometry">
-           <rect>
-            <x>130</x>
-            <y>530</y>
-            <width>118</width>
-            <height>23</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Continuous Shot</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="stop_1">
-          <property name="geometry">
-           <rect>
-            <x>130</x>
-            <y>560</y>
-            <width>119</width>
-            <height>23</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Stop</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="statusbar_1">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>410</y>
-            <width>368</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="3" column="2">
+           <widget class="QLabel" name="exposureLabel_1">
+            <property name="text">
+             <string>Exposure Time</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>455</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="9" column="2">
+           <widget class="QLabel" name="invertPixelLabel_1">
+            <property name="text">
+             <string>Invert Pixels</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0" colspan="2">
+           <widget class="QPushButton" name="stop_1">
+            <property name="text">
+             <string>Stop</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="2">
+           <widget class="QLabel" name="softwareTriggerLabel_1">
+            <property name="text">
+             <string>Software Trigger</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
+           <widget class="QSlider" name="gain_1">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QLabel" name="triggerSourceLabel_1">
+            <property name="text">
+             <string>Trigger Source</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="4">
+           <widget class="QWidget" name="image_1" native="true">
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border:3px solid blue</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="3">
+           <widget class="QComboBox" name="triggerMode_1"/>
+          </item>
+          <item row="1" column="4" colspan="2">
+           <widget class="QWidget" name="image_2" native="true">
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border:3px solid blue</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QSlider" name="exposure_1">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="3">
+           <widget class="QComboBox" name="triggerSource_1"/>
+          </item>
+          <item row="0" column="4">
+           <widget class="QPushButton" name="openSelected">
+            <property name="text">
+             <string>Open Selected</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QComboBox" name="pixelFormat_1"/>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QPushButton" name="singleShot_1">
+            <property name="text">
+             <string>Single Shot</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="scanButton">
+            <property name="text">
+             <string>Discover Cameras</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="4">
+           <widget class="QLineEdit" name="statusbar_1">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="QLabel" name="triggerModeLabel_1">
+            <property name="text">
+             <string>Frame Start Trigger</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="3">
+           <widget class="QCheckBox" name="invertPixel_1">
+            <property name="text">
+             <string>Enable</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QLabel" name="gainLabel_1">
+            <property name="text">
+             <string>Gain</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" colspan="2">
+           <widget class="QPushButton" name="continuous_1">
+            <property name="text">
+             <string>Continuous Shot</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" colspan="3">
+           <widget class="QComboBox" name="cameraList"/>
+          </item>
+          <item row="8" column="3">
+           <widget class="QPushButton" name="softwareTrigger_1">
+            <property name="text">
+             <string>Execute</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QLabel" name="pixelFormatLabel_1">
+            <property name="text">
+             <string>Pixel Format</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QPushButton" name="close_1">
+            <property name="text">
+             <string>close</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+         <zorder>scanButton</zorder>
+         <zorder>cameraList</zorder>
+         <zorder>openSelected</zorder>
+         <zorder>invertPixelLabel_1</zorder>
+         <zorder>image_2</zorder>
+         <zorder>statusbar_1</zorder>
+         <zorder>image_1</zorder>
+         <zorder>stop_1</zorder>
+         <zorder>continuous_1</zorder>
+         <zorder>singleShot_1</zorder>
+         <zorder>softwareTriggerLabel_1</zorder>
+         <zorder>triggerSourceLabel_1</zorder>
+         <zorder>triggerModeLabel_1</zorder>
+         <zorder>pixelFormatLabel_1</zorder>
+         <zorder>gainLabel_1</zorder>
+         <zorder>exposureLabel_1</zorder>
+         <zorder>invertPixel_1</zorder>
+         <zorder>softwareTrigger_1</zorder>
+         <zorder>triggerSource_1</zorder>
+         <zorder>triggerMode_1</zorder>
+         <zorder>pixelFormat_1</zorder>
+         <zorder>gain_1</zorder>
+         <zorder>exposure_1</zorder>
+         <zorder>horizontalSpacer_7</zorder>
+         <zorder>close_1</zorder>
         </widget>
         <widget class="QWidget" name="tab_3">
          <property name="font">
