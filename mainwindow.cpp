@@ -49,9 +49,9 @@ MainWindow::MainWindow(QWidget *parent)
 
         // Connect signals from CGuiCamera class to this dialog.
         QObject::connect(&(m_camera[i]), &CGuiCamera::NewGrabResult, this, &MainWindow::OnNewGrabResult); // 抓图
-        // QObject::connect(&(m_camera[i]), &CGuiCamera::StateChanged, this, &MainWindow::OnStateChanged);   // 状态更新
+        QObject::connect(&(m_camera[i]), &CGuiCamera::StateChanged, this, &MainWindow::OnStateChanged);   // 状态更新
         // QObject::connect(&(m_camera[i]), &CGuiCamera::DeviceRemoved, this, &MainWindow::OnDeviceRemoved); // 设备移除
-        // QObject::connect(&(m_camera[i]), &CGuiCamera::NodeUpdated, this, &MainWindow::OnNodeUpdated);     // 节点更新
+        QObject::connect(&(m_camera[i]), &CGuiCamera::NodeUpdated, this, &MainWindow::OnNodeUpdated); // 节点更新
     }
 }
 
@@ -638,7 +638,6 @@ void MainWindow::on_cameraList_currentIndexChanged(int index)
 
     // The combo box affects both open buttons.
     UpdateCameraDialog(0);
-    UpdateCameraDialog(1);
 }
 
 // Called to update value of slider.
@@ -670,6 +669,27 @@ void MainWindow::UpdateSlider(QSlider *pCtrl, Pylon::IIntegerEx &integerParamete
     }
 
     pCtrl->setEnabled(integerParameter.IsWritable());
+}
+
+// Update the control with the value of a camera parameter.
+void MainWindow::UpdateSliderText(QLineEdit *pString, Pylon::IIntegerEx &integerParameter)
+{
+    if (pString == NULL)
+    {
+        qDebug() << "Invalid control ID";
+        return;
+    }
+
+    if (integerParameter.IsReadable())
+    {
+        // Set the value as a string in wide character format.
+        pString->setText(integerParameter.ToString().c_str());
+    }
+    else
+    {
+        pString->setText("n/a");
+    }
+    pString->setEnabled(integerParameter.IsWritable());
 }
 
 // Stores GenApi enumeration items into CComboBox.
@@ -747,7 +767,7 @@ void MainWindow::UpdateEnumeration(QComboBox *pCtrl, Pylon::IEnumerationEx &enum
 }
 
 // Reset a slider control to default values.
-void MainWindow::ClearSlider(QSlider *pCtrl, QLabel *pString)
+void MainWindow::ClearSlider(QSlider *pCtrl, QLineEdit *pString)
 {
     pCtrl->setValue(0);
     pCtrl->setRange(0, 0);
@@ -765,6 +785,36 @@ void MainWindow::ClearEnumeration(QComboBox *pCtrl)
 
 void MainWindow::UpdateCameraDialog(int cameraId) // 根据相机状态更新窗口控件的状态
 {
+    bool isCameraSelected = (ui->cameraList->currentIndex() != -1);
+    bool isOpen = m_camera[cameraId].IsOpen();
+    bool isGrabbing = isOpen && m_camera[cameraId].IsGrabbing();
+    bool isSingleShotSupported = m_camera[cameraId].IsSingleShotSupported();
+
+    if (cameraId == 0) // 相机1
+    {
+        ui->openSelected->setEnabled(!isOpen && isCameraSelected);
+        ui->close_1->setEnabled(isOpen);
+        ui->singleShot_1->setEnabled(isOpen && !isGrabbing && isSingleShotSupported);
+        ui->continuous_1->setEnabled(isOpen && !isGrabbing);
+        ui->stop_1->setEnabled(isGrabbing);
+        ui->softwareTrigger_1->setEnabled(isOpen);
+        ui->invertPixel_1->setEnabled(isOpen);
+
+        // Disable these controls when a camera is open. Otherwise, check input.
+        if (!isOpen)
+        {
+            // Clear feature controls.
+            ClearSlider(ui->exposure_1, ui->exposureTimelineEdit_1);
+            ClearSlider(ui->gain_1, ui->gainlineEdit_1);
+            ClearEnumeration(ui->pixelFormat_1);
+            ClearEnumeration(ui->triggerMode_1);
+            ClearEnumeration(ui->triggerSource_1);
+        }
+    }
+    else
+    {
+        assert(false);
+    }
 }
 
 bool MainWindow::InternalOpenCamera(const Pylon::CDeviceInfo &devInfo, int cameraId)
@@ -787,15 +837,13 @@ bool MainWindow::InternalOpenCamera(const Pylon::CDeviceInfo &devInfo, int camer
         UpdateCameraDialog(cameraId);
         if (cameraId == 0)
         {
-            /*
             UpdateSlider(ui->exposure_1, m_camera[cameraId].GetExposureTime());
-            UpdateSliderText(ui->exposureLabel_1, m_camera[cameraId].GetExposureTime());
+            UpdateSliderText(ui->exposureTimelineEdit_1, m_camera[cameraId].GetExposureTime());
             UpdateSlider(ui->gain_1, m_camera[cameraId].GetGain());
-            UpdateSliderText(ui->gainLabel_1, m_camera[cameraId].GetGain());
+            UpdateSliderText(ui->gainlineEdit_1, m_camera[cameraId].GetGain());
             UpdateEnumeration(ui->pixelFormat_1, m_camera[cameraId].GetPixelFormat());
             UpdateEnumeration(ui->triggerMode_1, m_camera[cameraId].GetTriggerMode());
             UpdateEnumeration(ui->triggerSource_1, m_camera[cameraId].GetTriggerSource());
-            */
         }
         else
         {
@@ -912,4 +960,158 @@ void MainWindow::on_close_1_clicked()
     // The actual drawing is done in paintEvent.
     ui->image_1->repaint();
     ui->image_2->repaint();
+}
+
+void MainWindow::on_exposure_1_valueChanged(int value)
+{
+    m_camera[0].GetExposureTime().TrySetValue(value);
+}
+
+void MainWindow::on_gain_1_valueChanged(int value)
+{
+    m_camera[0].GetGain().TrySetValue(value);
+}
+
+// This will be called in response to the NodeUpdated signal posted by
+// CGuiCamera when a camera parameter changes its attributes or value.
+// This function is called in the GUI thread so you can access GUI elements.
+void MainWindow::OnNodeUpdated(int userHint, GenApi::INode *pNode)
+{
+    // Display the current values.
+    if ((userHint == 0) && m_camera[0].IsOpen() && (!m_camera[0].IsCameraDeviceRemoved()))
+    {
+        if (m_camera[userHint].GetExposureTime().GetNode() == pNode)
+        {
+            UpdateSlider(ui->exposure_1, m_camera[userHint].GetExposureTime());
+            UpdateSliderText(ui->exposureTimelineEdit_1, m_camera[userHint].GetExposureTime());
+        }
+
+        if (m_camera[userHint].GetGain().IsValid() && (m_camera[userHint].GetGain().GetNode() == pNode))
+        {
+            UpdateSlider(ui->gain_1, m_camera[userHint].GetGain());
+            UpdateSliderText(ui->gainlineEdit_1, m_camera[userHint].GetGain());
+        }
+
+        if (m_camera[userHint].GetPixelFormat().GetNode() == pNode)
+        {
+            UpdateEnumeration(ui->pixelFormat_1, m_camera[userHint].GetPixelFormat());
+        }
+
+        if (m_camera[userHint].GetTriggerMode().GetNode() == pNode)
+        {
+            UpdateEnumeration(ui->triggerMode_1, m_camera[userHint].GetTriggerMode());
+        }
+
+        if (m_camera[userHint].GetTriggerSource().GetNode() == pNode)
+        {
+            UpdateEnumeration(ui->triggerSource_1, m_camera[userHint].GetTriggerSource());
+        }
+    }
+}
+
+void MainWindow::on_exposureTimelineEdit_1_returnPressed()
+{
+    int value;
+    QString exposure_str = ui->exposureTimelineEdit_1->text();
+    try
+    {
+
+        if (exposure_str.toInt())
+        {
+            value = exposure_str.toInt();
+            if (value > ui->exposure_1->maximum() || value < ui->exposure_1->minimum())
+            {
+                throw QString("曝光数值输入超过可调范围!"); // 抛出一个字符串类型的异常
+            }
+        }
+        else
+        {
+            throw QString("曝光数值输入错误!"); // 抛出一个字符串类型的异常
+        }
+    }
+    catch (QString exception)
+    {
+        qDebug() << "Error: " << exception;
+        return;
+    }
+    m_camera[0].GetExposureTime().TrySetValue(value);
+    //    qDebug() << "曝光数值输入正确";
+}
+
+void MainWindow::on_gainlineEdit_1_returnPressed()
+{
+    int value;
+    QString gain_str = ui->gainlineEdit_1->text();
+    try
+    {
+
+        if (gain_str.toInt())
+        {
+            value = gain_str.toInt();
+            if (value > ui->gain_1->maximum() || value < ui->gain_1->minimum())
+            {
+                throw QString("增益数值输入超过可调范围!"); // 抛出一个字符串类型的异常
+            }
+        }
+        else
+        {
+            throw QString("增益数值输入错误!"); // 抛出一个字符串类型的异常
+        }
+    }
+    catch (QString exception)
+    {
+        qDebug() << "Error: " << exception;
+        return;
+    }
+    m_camera[0].GetGain().TrySetValue(value);
+    //    qDebug() << "增益数值输入正确";
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    QWidget::showEvent(event);
+
+    // Enable/disable controls.
+    for (int i = 0; i < MaxCamera; i++)
+    {
+        UpdateCameraDialog(i);
+    }
+
+    // Set timer for status bar (1000 ms update interval).
+    connect(&m_updateTimer, SIGNAL(timeout()), this, SLOT(OnUpdateTimer()));
+    m_updateTimer.start(1000);
+
+    // Simulate the user clicking the Discover Cameras button.
+    on_scanButton_clicked();
+}
+
+// This gets called every second. Update the status bar texts.
+void MainWindow::OnUpdateTimer() // 更新窗口中相机的信息（例如帧数、错帧、fps帧率），更新频率为1s
+{
+    // Update the status bars.
+    if (m_camera[0].IsOpen())
+    {
+        uint64_t imageCount = m_camera[0].GetGrabbedImages();
+        uint64_t errorCount = m_camera[0].GetGrabErrors();
+        // Very rough approximation approximation. The timer is triggerd every second.
+        double fpsEstimate = (double)m_camera[0].GetGrabbedImagesDiff();
+
+        QString status = QString("Frame rate: %0 fps\tImages: %1\tErrors: %2").arg(fpsEstimate, 6, 'f', 1).arg(imageCount).arg(errorCount);
+        ui->statusbar_1->setText(status);
+    }
+    else
+    {
+        ui->statusbar_1->setText("");
+    }
+}
+
+// This will be called in response to the StateChanged signal posted by
+// CGuiCamera when the grab is started or stopped.
+// This function is called in the GUI thread so you can access GUI elements.
+void MainWindow::OnStateChanged(int userHint, bool isGrabbing)
+{
+    PYLON_UNUSED(isGrabbing);
+
+    // Enable/disable Start/Stop buttons
+    UpdateCameraDialog(userHint);
 }

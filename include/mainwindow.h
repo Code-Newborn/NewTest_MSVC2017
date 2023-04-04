@@ -44,9 +44,11 @@ public:
     bool InternalOpenCamera(const Pylon::CDeviceInfo &devInfo, int cameraId);
     void InternalCloseCamera(int cameraId);
     void UpdateSlider(QSlider *pCtrl, Pylon::IIntegerEx &integerParameter);
+
     void UpdateEnumeration(QComboBox *pCtrl, Pylon::IEnumerationEx &enumParameter);
-        void ClearSlider(QSlider *pCtrl, QLabel *pString);
-        void ClearEnumeration(QComboBox *pCtrl);
+    void ClearSlider(QSlider *pCtrl, QLineEdit *pString);
+    void ClearEnumeration(QComboBox *pCtrl);
+    void UpdateSliderText(QLineEdit *pString, Pylon::IIntegerEx &integerParameter);
 
 public:
     QList<FloatDatas> datalist; // 全部数据帧存储
@@ -122,8 +124,22 @@ private slots:
 
     void on_close_1_clicked();
 
+    void on_exposure_1_valueChanged(int value);
+
+    void on_gain_1_valueChanged(int value);
+
+    void OnNodeUpdated(int userHint, GenApi::INode *pNode);
+
+    void on_exposureTimelineEdit_1_returnPressed();
+
+    void on_gainlineEdit_1_returnPressed();
+
+    void OnUpdateTimer();
+
+    void OnStateChanged(int userHint, bool isGrabbing);
+
 protected:
-    //    virtual void showEvent(QShowEvent *event) override;
+    virtual void showEvent(QShowEvent *event) override;
     virtual void paintEvent(QPaintEvent *) override;
 
 private:
@@ -134,5 +150,6 @@ private:
     Pylon::DeviceInfoList_t m_devices; // Pylon相机列表
     static const int MaxCamera = 1;    // 最大相机数
     CGuiCamera m_camera[MaxCamera];    // 相机操作类列表
+    QTimer m_updateTimer;              // 用于更新窗口信息
 };
 #endif // MAINWINDOW_H

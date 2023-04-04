@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
 
     Pylon::PylonAutoInitTerm pylonInit;
     MainWindow w;
+    w.setWindowFlags(w.windowFlags() & ~Qt::WindowMaximizeButtonHint); // 禁止最大化按钮
     w.show();
     return a.exec();
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1290</width>
-    <height>720</height>
+    <width>1618</width>
+    <height>1000</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -1801,14 +1801,21 @@ QComboBox::down-arrow {
           <string>相机</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_5">
-          <item row="3" column="2">
-           <widget class="QLabel" name="exposureLabel_1">
+          <item row="0" column="0">
+           <widget class="QPushButton" name="scanButton">
             <property name="text">
-             <string>Exposure Time</string>
+             <string>Discover Cameras</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="5">
+          <item row="0" column="3">
+           <widget class="QPushButton" name="openSelected">
+            <property name="text">
+             <string>Open Selected</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
            <spacer name="horizontalSpacer_7">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -1821,42 +1828,7 @@ QComboBox::down-arrow {
             </property>
            </spacer>
           </item>
-          <item row="9" column="2">
-           <widget class="QLabel" name="invertPixelLabel_1">
-            <property name="text">
-             <string>Invert Pixels</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0" colspan="2">
-           <widget class="QPushButton" name="stop_1">
-            <property name="text">
-             <string>Stop</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="2">
-           <widget class="QLabel" name="softwareTriggerLabel_1">
-            <property name="text">
-             <string>Software Trigger</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="3">
-           <widget class="QSlider" name="gain_1">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="2">
-           <widget class="QLabel" name="triggerSourceLabel_1">
-            <property name="text">
-             <string>Trigger Source</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="4">
+          <item row="1" column="0" colspan="3">
            <widget class="QWidget" name="image_1" native="true">
             <property name="autoFillBackground">
              <bool>false</bool>
@@ -1866,10 +1838,7 @@ QComboBox::down-arrow {
             </property>
            </widget>
           </item>
-          <item row="6" column="3">
-           <widget class="QComboBox" name="triggerMode_1"/>
-          </item>
-          <item row="1" column="4" colspan="2">
+          <item row="1" column="3" colspan="2">
            <widget class="QWidget" name="image_2" native="true">
             <property name="autoFillBackground">
              <bool>false</bool>
@@ -1879,41 +1848,135 @@ QComboBox::down-arrow {
             </property>
            </widget>
           </item>
-          <item row="3" column="3">
-           <widget class="QSlider" name="exposure_1">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="3">
-           <widget class="QComboBox" name="triggerSource_1"/>
-          </item>
-          <item row="0" column="4">
-           <widget class="QPushButton" name="openSelected">
-            <property name="text">
-             <string>Open Selected</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="3">
-           <widget class="QComboBox" name="pixelFormat_1"/>
-          </item>
-          <item row="3" column="0" colspan="2">
+          <item row="3" column="0">
            <widget class="QPushButton" name="singleShot_1">
             <property name="text">
              <string>Single Shot</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QPushButton" name="scanButton">
+          <item row="3" column="1">
+           <widget class="QLabel" name="exposureLabel_1">
             <property name="text">
-             <string>Discover Cameras</string>
+             <string>Exposure Time</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" colspan="4">
+          <item row="3" column="2">
+           <layout class="QHBoxLayout" name="horizontalLayout" stretch="5,1">
+            <item>
+             <widget class="QSlider" name="exposure_1">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="exposureTimelineEdit_1"/>
+            </item>
+           </layout>
+          </item>
+          <item row="4" column="0">
+           <widget class="QPushButton" name="continuous_1">
+            <property name="text">
+             <string>Continuous Shot</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="gainLabel">
+            <property name="text">
+             <string>Gain</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,1">
+            <item>
+             <widget class="QSlider" name="gain_1">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="gainlineEdit_1"/>
+            </item>
+           </layout>
+          </item>
+          <item row="5" column="0">
+           <widget class="QPushButton" name="stop_1">
+            <property name="text">
+             <string>Stop</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLabel" name="pixelFormatLabel_1">
+            <property name="text">
+             <string>Pixel Format</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QComboBox" name="pixelFormat_1"/>
+          </item>
+          <item row="6" column="0">
+           <widget class="QPushButton" name="close_1">
+            <property name="text">
+             <string>close</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QLabel" name="triggerModeLabel_1">
+            <property name="text">
+             <string>Frame Start Trigger</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="QComboBox" name="triggerMode_1"/>
+          </item>
+          <item row="7" column="1">
+           <widget class="QLabel" name="triggerSourceLabel_1">
+            <property name="text">
+             <string>Trigger Source</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QComboBox" name="triggerSource_1"/>
+          </item>
+          <item row="8" column="1">
+           <widget class="QLabel" name="softwareTriggerLabel_1">
+            <property name="text">
+             <string>Software Trigger</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="2">
+           <widget class="QPushButton" name="softwareTrigger_1">
+            <property name="text">
+             <string>Execute</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QLabel" name="invertPixelLabel_1">
+            <property name="text">
+             <string>Invert Pixels</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="2">
+           <widget class="QCheckBox" name="invertPixel_1">
+            <property name="text">
+             <string>Enable</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="3">
            <widget class="QLineEdit" name="statusbar_1">
             <property name="enabled">
              <bool>false</bool>
@@ -1923,57 +1986,8 @@ QComboBox::down-arrow {
             </property>
            </widget>
           </item>
-          <item row="6" column="2">
-           <widget class="QLabel" name="triggerModeLabel_1">
-            <property name="text">
-             <string>Frame Start Trigger</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="3">
-           <widget class="QCheckBox" name="invertPixel_1">
-            <property name="text">
-             <string>Enable</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="2">
-           <widget class="QLabel" name="gainLabel_1">
-            <property name="text">
-             <string>Gain</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0" colspan="2">
-           <widget class="QPushButton" name="continuous_1">
-            <property name="text">
-             <string>Continuous Shot</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1" colspan="3">
+          <item row="0" column="1" colspan="2">
            <widget class="QComboBox" name="cameraList"/>
-          </item>
-          <item row="8" column="3">
-           <widget class="QPushButton" name="softwareTrigger_1">
-            <property name="text">
-             <string>Execute</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="2">
-           <widget class="QLabel" name="pixelFormatLabel_1">
-            <property name="text">
-             <string>Pixel Format</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QPushButton" name="close_1">
-            <property name="text">
-             <string>close</string>
-            </property>
-           </widget>
           </item>
          </layout>
          <zorder>scanButton</zorder>
@@ -1990,7 +2004,7 @@ QComboBox::down-arrow {
          <zorder>triggerSourceLabel_1</zorder>
          <zorder>triggerModeLabel_1</zorder>
          <zorder>pixelFormatLabel_1</zorder>
-         <zorder>gainLabel_1</zorder>
+         <zorder>gainLabel</zorder>
          <zorder>exposureLabel_1</zorder>
          <zorder>invertPixel_1</zorder>
          <zorder>softwareTrigger_1</zorder>
@@ -2001,6 +2015,9 @@ QComboBox::down-arrow {
          <zorder>exposure_1</zorder>
          <zorder>horizontalSpacer_7</zorder>
          <zorder>close_1</zorder>
+         <zorder>gainLabel_1</zorder>
+         <zorder>exposureTimelineEdit_1</zorder>
+         <zorder>gainlineEdit_1</zorder>
         </widget>
         <widget class="QWidget" name="tab_3">
          <property name="font">
@@ -2024,7 +2041,7 @@ QComboBox::down-arrow {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1290</width>
+     <width>1618</width>
      <height>23</height>
     </rect>
    </property>
